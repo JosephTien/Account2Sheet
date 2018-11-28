@@ -1,0 +1,50 @@
+{{define "content"}}
+<!------------------------------------------------------------------------------------------------------------>
+<style>
+	input{
+		height:5vh;
+		width:90%;
+		font-size:5vh;
+	}
+	form{
+		width:100vw;
+		font-size:5vh;
+		text-align:center;
+	}
+	button{
+		height:10vh;
+		width:100%;
+		font-size:5vh;
+	}
+</style>
+<body style="height:95vh">
+	<form enctype='application/json' id="form">
+			<table width="100%"><tr>
+					<td width="30%">日期</td>
+					<td width="70%"><input type="date" name="date" id="date"></td>
+			</tr></table>
+			<hr>
+			<table width="100%"><tr>
+					<td width="30%">內容</td>
+					<td width="70%"><input type="text" name="item"></td>
+			</tr></table>
+			<hr>
+			<table width="100%"><tr>
+					<td width="30%">墊錢</td>
+					<td width="70%"><input type="text" name="payer"></td>
+			</tr></table>
+			<hr>
+			<table width="100%"><tr>
+					<td width="30%">金額</td>
+					<td width="70%"><input type="number" name="amount"></td>
+			</tr></table>
+			<hr>
+	</form>
+	<table width="100%"><tr>
+			<td><button onclick="addOutcome()">支出</button></td>
+			<td><button onclick="addIncome()">收入</button></td>
+	</tr></table>
+
+</body>
+<!------------------------------------------------------------------------------------------------------------>
+{{end}}
