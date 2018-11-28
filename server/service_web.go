@@ -82,5 +82,6 @@ func startWeb(){
 		http.HandleFunc("/", addHandler) // static version
 		http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(config.path["static"]))))
 	  fmt.Println("Server Started on Port ", config.port)
-	  log.Fatal(http.ListenAndServe(":"+strconv.Itoa(config.port), nil))
+		//log.Fatal(http.ListenAndServe(":"+strconv.Itoa(config.port), nil))
+		log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), nil))
 }
