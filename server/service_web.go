@@ -3,12 +3,12 @@ package main
 import(
 	"log"
 	"fmt"
-	"strconv"
 	"net/http"
 	"html/template"
 	"os"
 	"github.com/graarh/golang-socketio"
 	"github.com/graarh/golang-socketio/transport"
+	"strconv"
 )
 type Config struct{
     port int
@@ -78,10 +78,16 @@ func InitSocket(){
 }
 
 func startWeb(){
-		InitSocket()
-		http.HandleFunc("/", addHandler) // static version
-		http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(config.path["static"]))))
-	  fmt.Println("Server Started on Port ", config.port)
-		//log.Fatal(http.ListenAndServe(":"+strconv.Itoa(config.port), nil))
+	InitSocket()
+	http.HandleFunc("/", addHandler) // static version
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(config.path["static"]))))
+	fmt.Println("Server Started on Port ", config.port)
+	var portstr = os.Getenv("PORT")
+	if portstr!=""{
 		log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), nil))
+	}else{
+		log.Fatal(http.ListenAndServe(":"+strconv.Itoa(config.port), nil))
+	}
+	
+	
 }

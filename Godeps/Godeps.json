@@ -1,0 +1,76 @@
+{
+	"ImportPath": "jtien/account2sheet",
+	"GoVersion": "go1.11",
+	"GodepVersion": "v80",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "cloud.google.com/go/compute/metadata",
+			"Comment": "v0.33.1-1-g977bdf6a",
+			"Rev": "977bdf6a60d16cd466ccbfe6c20bfc20ddf923ba"
+		},
+		{
+			"ImportPath": "github.com/gorilla/websocket",
+			"Comment": "v1.4.0-5-g483fb8d",
+			"Rev": "483fb8d7c32fcb4b5636cd293a92e3935932e2f4"
+		},
+		{
+			"ImportPath": "github.com/graarh/golang-socketio",
+			"Rev": "2c44953b9b5fcd4da83ec8816f002ce68a12ef2d"
+		},
+		{
+			"ImportPath": "github.com/graarh/golang-socketio/protocol",
+			"Rev": "2c44953b9b5fcd4da83ec8816f002ce68a12ef2d"
+		},
+		{
+			"ImportPath": "github.com/graarh/golang-socketio/transport",
+			"Rev": "2c44953b9b5fcd4da83ec8816f002ce68a12ef2d"
+		},
+		{
+			"ImportPath": "golang.org/x/net/context",
+			"Rev": "adae6a3d119ae4890b46832a2e88a95adc62b8e7"
+		},
+		{
+			"ImportPath": "golang.org/x/net/context/ctxhttp",
+			"Rev": "adae6a3d119ae4890b46832a2e88a95adc62b8e7"
+		},
+		{
+			"ImportPath": "golang.org/x/oauth2",
+			"Rev": "8f65e3013ebad444f13bc19536f7865efc793816"
+		},
+		{
+			"ImportPath": "golang.org/x/oauth2/google",
+			"Rev": "8f65e3013ebad444f13bc19536f7865efc793816"
+		},
+		{
+			"ImportPath": "golang.org/x/oauth2/internal",
+			"Rev": "8f65e3013ebad444f13bc19536f7865efc793816"
+		},
+		{
+			"ImportPath": "golang.org/x/oauth2/jws",
+			"Rev": "8f65e3013ebad444f13bc19536f7865efc793816"
+		},
+		{
+			"ImportPath": "golang.org/x/oauth2/jwt",
+			"Rev": "8f65e3013ebad444f13bc19536f7865efc793816"
+		},
+		{
+			"ImportPath": "google.golang.org/api/gensupport",
+			"Rev": "bed42c95df7d5f673175b43d85f6b4047efe3814"
+		},
+		{
+			"ImportPath": "google.golang.org/api/googleapi",
+			"Rev": "bed42c95df7d5f673175b43d85f6b4047efe3814"
+		},
+		{
+			"ImportPath": "google.golang.org/api/googleapi/internal/uritemplates",
+			"Rev": "bed42c95df7d5f673175b43d85f6b4047efe3814"
+		},
+		{
+			"ImportPath": "google.golang.org/api/sheets/v4",
+			"Rev": "bed42c95df7d5f673175b43d85f6b4047efe3814"
+		}
+	]
+}

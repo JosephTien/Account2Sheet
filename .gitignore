@@ -1,1 +1,3 @@
-run
+exe/
+.env
+.docker_build/
