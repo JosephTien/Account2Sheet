@@ -1,7 +1,5 @@
 package main
-
 func main() {
-    getSheetsService()
-    readInfos()
+    prePareSheetsService()
     startWeb()
 }

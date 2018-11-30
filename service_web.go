@@ -1,6 +1,6 @@
 package main
 
-import(
+import (
 	"log"
 	"fmt"
 	"net/http"
@@ -19,18 +19,18 @@ var(
     config = Config{
         port : 8080,
         path : map[string]string{
-            "server" : "server"+sep,
-            "static" : "client"+sep+"static"+sep,
-            "view"   : "client"+sep+"view"+sep,
+            "static" : "static"+sep,
+            "templates" : "templates"+sep,
         },
     }
-    htmls = []string{
-				config.path["view"]+"base.html",
-				config.path["view"]+"index.html",
-		}
+    templates = []string{
+		config.path["templates"]+"base.tmpl.html",
+		config.path["templates"]+"index.tmpl.html",
+	}
 )
 
 type Data struct{
+		SpreadsheetId  string `json:"spreadsheetId"`
 		Date string `json:"date"`
 		Item string `json:"item"`
 		Payer string `json:"payer"`
@@ -40,7 +40,7 @@ type Data struct{
 		Outcome string `json:"outcome"`
 }
 func addHandler(w http.ResponseWriter, r *http.Request) {
-		tmpl,err := template.ParseFiles(htmls[0],htmls[1])
+		tmpl,err := template.ParseFiles(templates[0],templates[1])
 				if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
@@ -69,8 +69,16 @@ func InitSocket(){
 		//---------- OnAdd ------------------------------------
 		server.On("add", func(c *gosocketio.Channel, data Data) {
 				//fmt.Println("recv add!")
-				addInfo(data)
-				c.Emit("added","")
+				error := addInfo(data)
+				if !error{
+					c.Emit("added","")
+				}else{
+					c.Emit("error","")
+				}
+		})
+		//---------- OnAdd ------------------------------------
+		server.On("require", func(c *gosocketio.Channel, data Data) {
+			
 		})
 		//-----------------------------------------------------
 		http.Handle("/socket.io/", server)
@@ -81,13 +89,13 @@ func startWeb(){
 	InitSocket()
 	http.HandleFunc("/", addHandler) // static version
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(config.path["static"]))))
-	fmt.Println("Server Started on Port ", config.port)
 	var portstr = os.Getenv("PORT")
+	fmt.Printf("~%s~", portstr)
 	if portstr!=""{
-		log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), nil))
+		fmt.Println("Server Started on Port ", portstr)
+		log.Fatal(http.ListenAndServe(":"+portstr, nil))
 	}else{
+		fmt.Println("Server Started on Port ", config.port)
 		log.Fatal(http.ListenAndServe(":"+strconv.Itoa(config.port), nil))
 	}
-	
-	
 }

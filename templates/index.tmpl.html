@@ -16,27 +16,41 @@
 		width:100%;
 		font-size:5vh;
 	}
+	select{
+		width: 90vw;
+		font-size: 5vh;
+	}
+	a{
+		font-size: 2vh;
+	}
 </style>
 <body style="height:95vh">
 	<form enctype='application/json' id="form">
+			<select name="spreadsheetId">
+				<option value="1zvYlacc1ESyAcBoxuOyLlZ_Uiilz5MA8b21_p_NzWng">
+					 ICT Project (Diego)
+				</option>
+			</select>
+			<a id="link" herf="" style="font-size:2h"></a>
+			<hr>
 			<table width="100%"><tr>
-					<td width="30%">日期</td>
-					<td width="70%"><input type="date" name="date" id="date"></td>
+					<td width="20%">日期</td>
+					<td width="80%"><input type="date" name="date" id="date"></td>
 			</tr></table>
 			<hr>
 			<table width="100%"><tr>
-					<td width="30%">內容</td>
-					<td width="70%"><input type="text" name="item"></td>
+					<td width="20%">內容</td>
+					<td width="80%"><input type="text" name="item"></td>
 			</tr></table>
 			<hr>
 			<table width="100%"><tr>
-					<td width="30%">墊錢</td>
-					<td width="70%"><input type="text" name="payer"></td>
+					<td width="20%">墊錢</td>
+					<td width="80%"><input type="text" name="payer"></td>
 			</tr></table>
 			<hr>
 			<table width="100%"><tr>
-					<td width="30%">金額</td>
-					<td width="70%"><input type="number" name="amount"></td>
+					<td width="20%">金額</td>
+					<td width="80%"><input type="number" name="amount"></td>
 			</tr></table>
 			<hr>
 	</form>
@@ -44,6 +58,9 @@
 			<td><button onclick="addOutcome()">支出</button></td>
 			<td><button onclick="addIncome()">收入</button></td>
 	</tr></table>
+	<font>*墊款人為空即公費出款</font><br>
+	<font>*墊款人在收入時無效</font>
+
 
 </body>
 <!------------------------------------------------------------------------------------------------------------>

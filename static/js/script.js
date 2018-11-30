@@ -1,12 +1,22 @@
 //----- socket.io -----//
 var socket = io('', {transports: ['websocket']});//this domain
 socket.on('added',function(data){
-    alert("done")
+    alert("成功新增！")
+    clear()
+});
+socket.on('error',function(data){
+    alert("維修中...")
 });
 
-$('#date').val(getToday());
+$('input[name="date"]').val(getToday());
+
+var s = $('select')[0];
+$('a').text(s.options[s.selectedIndex].value)
+$('a').attr("href", "https://docs.google.com/spreadsheets/d/"+s.options[s.selectedIndex].value)
 
 function addOutcome(){
+    if($("input[name='item']").val()==""){alert("名稱不能為空");return;}
+    if($("input[name='amount']").val()==""){alert("金額不能為空");return;}
     var data = $('form').serializeObject();
     if(data.payer=="")data.state="Y"
     else data.state="N"
@@ -36,6 +46,13 @@ function addIncome(){
     data.outcome="0"
     //alert(JSON.stringify(data))
     socket.emit('add', data)
+}
+
+function clear(){
+    $('input[name="date"]').val(getToday());
+    $('input[name="item"]').val("");
+    $('input[name="payer"]').val("");
+    $('input[name="amount"]').val("");
 }
 
 $.fn.serializeObject = function()
