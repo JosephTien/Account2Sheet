@@ -25,7 +25,11 @@
 		font-size:2vh;
 		vertical-align: text-top;
 	}
-
+	.bl{
+		border-top: 2px solid gray;
+		padding-bottom: 2vh;
+		padding-top: 2vh;
+	}
 	/******************************************/
 	/* The switch - the box around the slider */
 	.switch {
@@ -102,20 +106,18 @@
 			</select>
 			<a id="link" herf=""></a>
 			<!----------------------------------------------------------------------->
-			<div class="row">
+			<div class="row bl">
 				<div class="col-xs-3">日期</div>
 				<div class="col-xs-9"><input type="date" name="date"></div>
 			</div>
-			<hr>
 			<!----------------------------------------------------------------------->
-			<div class="row">
+			<div class="row bl">
 				<div class="col-xs-3">內容</div>
 				<div class="col-xs-9"><input type="text" name="item"></div>
 			</div>
-			<hr>
 			<!----------------------------------------------------------------------->
 			<div id="optional">
-			<div class="row">
+			<div class="row bl">
 				<div class="col-xs-3">墊款</div>
 				<div class="col-xs-3">
 					<label class="switch">
@@ -125,9 +127,8 @@
 				</div>
 				<div class="col-xs-6"><input type="text" name="payer" placeholder="墊款人"></div>
 			</div>
-			<hr>
 			<!----------------------------------------------------------------------->
-			<div class="row">
+			<div class="row bl">
 				<div class="col-xs-3">收據</div>
 				<div class="col-xs-3">
 					<label class="switch">
@@ -136,17 +137,15 @@
 					</label>
 				</div>
 			</div>
-			<hr>
 			</div>
 			<!----------------------------------------------------------------------->
-			<div class="row">
+			<div class="row bl">
 				<div class="col-xs-3">金額</div>
 				<div class="col-xs-9"><input type="number" name="amount"></div>
 			</div>
-			<hr>
 			<!----------------------------------------------------------------------->
 		</form>
-		<div class="row">
+		<div class="row bl">
 			<div class="col-xs-6">
 				<button id="submit" class="btn btn-success" style="font-size:4vh" onclick="submit()">新增支出</button>
 			</div>
