@@ -9,6 +9,7 @@ import (
 	"github.com/graarh/golang-socketio"
 	"github.com/graarh/golang-socketio/transport"
 	"strconv"
+	"strings"
 )
 type Config struct{
     port int
@@ -31,10 +32,12 @@ var(
 
 type Data struct{
 		SpreadsheetId  string `json:"spreadsheetId"`
+		TableName string `json:"tableName"`
 		Date string `json:"date"`
 		Item string `json:"item"`
-		Payer string `json:"payer"`
 		State string `json:"state"`
+		Payer string `json:"payer"`
+		Receipt string `json:"receipt"`
 		Reimburse string `json:"reimburse"`
 		Income string `json:"income"`
 		Outcome string `json:"outcome"`
@@ -68,7 +71,6 @@ func InitSocket(){
 		})
 		//---------- OnAdd ------------------------------------
 		server.On("add", func(c *gosocketio.Channel, data Data) {
-				//fmt.Println("recv add!")
 				error := addInfo(data)
 				if !error{
 					c.Emit("added","")
@@ -76,13 +78,19 @@ func InitSocket(){
 					c.Emit("error","")
 				}
 		})
-		//---------- OnAdd ------------------------------------
-		server.On("require", func(c *gosocketio.Channel, data Data) {
-			
+		//---------- OnList ------------------------------------
+		server.On("requirelist", func(c *gosocketio.Channel, data Data) {
+			readList(data.SpreadsheetId, data.TableName)
+			var sheetlist []string = make([]string, len(spreadsheets))
+			i := 0
+			for key, value := range spreadsheets {
+				sheetlist[i]=fmt.Sprintf("%s/%s", key, value.gid)
+				i++
+			}
+			c.Emit("list",strings.Join(sheetlist,"\\"))
 		})
 		//-----------------------------------------------------
 		http.Handle("/socket.io/", server)
-
 }
 
 func startWeb(){
@@ -90,7 +98,6 @@ func startWeb(){
 	http.HandleFunc("/", addHandler) // static version
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(config.path["static"]))))
 	var portstr = os.Getenv("PORT")
-	fmt.Printf("~%s~", portstr)
 	if portstr!=""{
 		fmt.Println("Server Started on Port ", portstr)
 		log.Fatal(http.ListenAndServe(":"+portstr, nil))

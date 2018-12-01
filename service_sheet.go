@@ -15,26 +15,54 @@ import (
 )
 type Sheet struct{
     rows [][]interface {}
-    updated bool
+    updated bool//sync problem!!!
+    gid string
 }
 var(
     keypath = "key"+string(os.PathSeparator)
     defaultSpreadsheetId = "1zvYlacc1ESyAcBoxuOyLlZ_Uiilz5MA8b21_p_NzWng"
     srv *sheets.Service
-    spreadsheets = make(map[string]*Sheet)
+    spreadsheets = make(map[string]*Sheet)//chach // manual edit may ruin the chach
 )
 /////////////////////////////////////////////////////////////////////////////////
-func readInfos(spreadsheetId string)bool{
-    _, exist := spreadsheets[spreadsheetId]
+func readList(spreadsheetId string, tableName string)bool{
+    readRange := fmt.Sprintf("%s!A2:C",tableName)
+    resp, err := srv.Spreadsheets.Values.Get(spreadsheetId, readRange).Do()
+    if err != nil {
+        log.Fatalf("Unable to retrieve data from sheet: %v", err)
+        return false
+    }
+    if len(resp.Values) == 0 {
+        fmt.Println("No data found.")
+    } else {
+        for _, row := range resp.Values {
+            hashstr := fmt.Sprintf("%s/%s",row[0],row[1])
+            _, exist := spreadsheets[hashstr]
+            if !exist{
+                if len(row)==3{
+                    spreadsheets[hashstr] = &Sheet{nil, false, fmt.Sprintf("%s",row[2])}
+                }else{
+                    spreadsheets[hashstr] = &Sheet{nil, false, ""}
+                }
+                
+            }
+        }
+    }
+    return true
+}
+/////////////////////////////////////////////////////////////////////////////////
+func readInfos(spreadsheetId string, tableName string)bool{
+    hashstr := fmt.Sprintf("%s/%s",spreadsheetId,tableName)
+    _, exist := spreadsheets[hashstr]
     if exist{
-        if spreadsheets[spreadsheetId].updated{
-            return false
+        if spreadsheets[hashstr].updated{
+            //return false //maybe manual edit, so don't trust the chach
         }
     }else{
-        spreadsheets[spreadsheetId] = &Sheet{nil, false}
+        spreadsheets[hashstr] = &Sheet{nil, false, ""}
     }
     //-------------------------------------
-    readRange := "A2:F"
+    readRange := fmt.Sprintf("%s!A2:G",tableName)
     resp, err := srv.Spreadsheets.Values.Get(spreadsheetId, readRange).Do()
     if err != nil {
         log.Fatalf("Unable to retrieve data from sheet: %v", err)
@@ -43,28 +71,28 @@ func readInfos(spreadsheetId string)bool{
     if len(resp.Values) == 0 {
         fmt.Println("No data found.")
     } else {
-        for _, row := range resp.Values {
-            fmt.Printf("%s: %s\n", row[0], row[1])
-        }
+        
     }
-    spreadsheets[spreadsheetId].rows = resp.Values
-    spreadsheets[spreadsheetId].updated = true;
+    spreadsheets[hashstr].rows = resp.Values
+    spreadsheets[hashstr].updated = true;
     return false
 }
 func addInfo(data Data)bool{
     spreadsheetId := data.SpreadsheetId
-    readInfos(spreadsheetId)
+    tableName := data.TableName
+    readInfos(spreadsheetId, tableName)
+    hashstr := fmt.Sprintf("%s/%s", spreadsheetId, tableName)
     //-------------------------------------
-    tarrow:=len(spreadsheets[spreadsheetId].rows)+2
-    str_calculate:="=F2-G2"
-    str_wallet:="=IF(D2=\"Y\",F2-G2,0.00)"
+    tarrow:=len(spreadsheets[hashstr].rows)+2
+    str_calculate:="=G2-H2"
+    str_wallet:="=IF(D2=\"Y\",G2-H2,0.00)"
     if tarrow>2{
-      str_calculate=fmt.Sprintf("=H%d+F%d-G%d", tarrow-1, tarrow, tarrow)
-      str_wallet=fmt.Sprintf("=IF(D%d=\"Y\",I%d+F%d-G%d,I%d)", tarrow, tarrow-1, tarrow, tarrow, tarrow-1)
+        str_calculate=fmt.Sprintf("=I%d+G%d-H%d", tarrow-1, tarrow, tarrow)
+        str_wallet=fmt.Sprintf("=IF(D%d=\"Y\",J%d+G%d-H%d,J%d)", tarrow, tarrow-1, tarrow, tarrow, tarrow-1)
     }
-    writeRange := "A2"
+    writeRange := fmt.Sprintf("%s!A2",tableName)
     var vr sheets.ValueRange
-    myval := []interface{}{data.Date, data.Item, data.Payer, data.State, data.Reimburse, data.Income, data.Outcome, str_calculate, str_wallet}
+    myval := []interface{}{data.Date, data.Item, data.State, data.Payer, data.Receipt, data.Reimburse, data.Income, data.Outcome, str_calculate, str_wallet}
     vr.Values = append(vr.Values, myval)
     _, err := srv.Spreadsheets.Values.Append(spreadsheetId, writeRange, &vr).ValueInputOption("USER_ENTERED").Do()
     if err != nil {
@@ -72,8 +100,7 @@ func addInfo(data Data)bool{
         return true
     }
     //-------------------------------------
-    spreadsheets[spreadsheetId].rows = append(spreadsheets[spreadsheetId].rows, myval)
-    //spreadsheets[spreadsheetId].updated = false;
+    spreadsheets[hashstr].rows = append(spreadsheets[hashstr].rows, myval)
     return false
 }
 /////////////////////////////////////////////////////////////////////////////////

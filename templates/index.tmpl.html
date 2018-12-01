@@ -1,67 +1,160 @@
 {{define "content"}}
 <!------------------------------------------------------------------------------------------------------------>
 <style>
-	input{
-		height:5vh;
-		width:80%;
+	body{
+		text-align:center;
 		font-size:4vh;
 	}
 	form{
-		width:100vw;
 		font-size:4vh;
 		text-align:center;
+	}
+	select{
+		width: 90vw;
+	}
+	input{
+		width:100%;
+		height: 6vh
 	}
 	button{
 		height:10vh;
 		width:100%;
 		font-size:4vh;
 	}
-	select{
-		width: 90vw;
-		font-size: 4vh;
-	}
 	a{
-		font-size: 2vh;
+		font-size:2vh;
+		vertical-align: text-top;
+	}
+
+	/******************************************/
+	/* The switch - the box around the slider */
+	.switch {
+		position: relative;
+		display: inline-block;
+		width: 60px;
+		height: 34px;
+	}
+	.switch-full{
+		width: 100%;
+	}
+	/* Hide default HTML checkbox */
+	.switch input {
+		opacity: 0;
+		width: 0;
+		height: 0;
+	}
+	/* The slider */
+	.slider {
+		position: absolute;
+		cursor: pointer;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #ccc;
+		-webkit-transition: .4s;
+		transition: .4s;
+	}
+	.slider:before {
+		position: absolute;
+		content: "";
+		height: 26px;
+		width: 26px;
+		left: 4px;
+		bottom: 4px;
+		background-color: white;
+		-webkit-transition: .4s;
+		transition: .4s;
+	}
+	input:checked + .slider {
+		background-color: #2196F3;
+	}
+	input:checked + .slider {
+		background-color: #2196F3;
+	}
+	input:focus + .slider {
+		box-shadow: 0 0 1px #2196F3;
+	}
+	input:checked + .slider:before {
+		-webkit-transform: translateX(26px);
+		-ms-transform: translateX(26px);
+		transform: translateX(26px);
+	}
+	
+	/* Rounded sliders */
+	.slider.round {
+		border-radius: 34px;
+	}
+	.slider.round:before {
+		border-radius: 50%;
 	}
 </style>
-<body style="height:95vh">
-	<form enctype='application/json' id="form">
+<body>
+	<div class="container">
+		<br>
+		<form enctype='application/json' id="form">	
 			<select name="spreadsheetId">
-				<option value="1zvYlacc1ESyAcBoxuOyLlZ_Uiilz5MA8b21_p_NzWng">
-					 ICT Project (Diego)
+				<!--
+				<option value="1zvYlacc1ESyAcBoxuOyLlZ_Uiilz5MA8b21_p_NzWng" gid="0">
+					Diego
 				</option>
+				-->
 			</select>
-			<a id="link" herf="" style="font-size:2h"></a>
+			<a id="link" herf=""></a>
+			<!----------------------------------------------------------------------->
+			<div class="row">
+				<div class="col-xs-3">日期</div>
+				<div class="col-xs-9"><input type="date" name="date"></div>
+			</div>
 			<hr>
-			<table width="100%"><tr>
-					<td width="20%">日期</td>
-					<td width="80%"><input type="date" name="date" id="date"></td>
-			</tr></table>
+			<!----------------------------------------------------------------------->
+			<div class="row">
+				<div class="col-xs-3">內容</div>
+				<div class="col-xs-9"><input type="text" name="item"></div>
+			</div>
 			<hr>
-			<table width="100%"><tr>
-					<td width="20%">內容</td>
-					<td width="80%"><input type="text" name="item"></td>
-			</tr></table>
+			<!----------------------------------------------------------------------->
+			<div id="optional">
+			<div class="row">
+				<div class="col-xs-3">墊款</div>
+				<div class="col-xs-3">
+					<label class="switch">
+						<input type="checkbox" class="switch" name="state" id="state">
+					  	<span class="slider round"></span>
+					</label>
+				</div>
+				<div class="col-xs-6"><input type="text" name="payer" placeholder="墊款人"></div>
+			</div>
 			<hr>
-			<table width="100%"><tr>
-					<td width="20%">墊錢</td>
-					<td width="80%"><input type="text" name="payer"></td>
-			</tr></table>
+			<!----------------------------------------------------------------------->
+			<div class="row">
+				<div class="col-xs-3">收據</div>
+				<div class="col-xs-3">
+					<label class="switch">
+						<input type="checkbox" class="switch" name="receipt" id="receipt" unchecked>
+						<span class="slider round"></span>
+					</label>
+				</div>
+			</div>
 			<hr>
-			<table width="100%"><tr>
-					<td width="20%">金額</td>
-					<td width="80%"><input type="number" name="amount"></td>
-			</tr></table>
+			</div>
+			<!----------------------------------------------------------------------->
+			<div class="row">
+				<div class="col-xs-3">金額</div>
+				<div class="col-xs-9"><input type="number" name="amount"></div>
+			</div>
 			<hr>
-	</form>
-	<table width="100%"><tr>
-			<td><button onclick="addOutcome()">支出</button></td>
-			<td><button onclick="addIncome()">收入</button></td>
-	</tr></table>
-	<font>*墊款人為空即公費出款</font><br>
-	<font>*墊款人在收入時無效</font>
-
-
+			<!----------------------------------------------------------------------->
+		</form>
+		<div class="row">
+			<div class="col-xs-6">
+				<button id="submit" class="btn btn-success" style="font-size:4vh" onclick="submit()">新增支出</button>
+			</div>
+			<div class="col-xs-6">
+				<button class="btn btn-default" style="font-size:4vh" onclick="toggleMode()" >切換模式</button>
+			<div>
+		</div>
+	</div>
 </body>
 <!------------------------------------------------------------------------------------------------------------>
 {{end}}
