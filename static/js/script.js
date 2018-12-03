@@ -11,7 +11,7 @@ socket.on('added',function(data){
     alert("成功新增！")
     clear()
 });
-socket.on('error',function(data){
+socket.on('err',function(data){
     alert("維修中...")
 });
 socket.on('list',function(data){
@@ -36,8 +36,7 @@ socket.on('list',function(data){
         var vals = sheet.split("/")
         $("#sheetlist").append("<li><a href=\"javascript:selectSheet(\'"+sheet+"\')\">"+vals[1]+"</a></li>")
         if(i==0){
-            $('#tabelName').attr("href", "https://docs.google.com/spreadsheets/d/"+vals[0]+"/edit#gid="+vals[2])
-            $('#tabelName').text(vals[1])
+            selectSheet(sheet)
         }
         i++
     });
@@ -69,6 +68,8 @@ function selectSheet(sheet){
     var vals = sheet.split("/")
     $('#tabelName').attr("href", "https://docs.google.com/spreadsheets/d/"+vals[0]+"/edit#gid="+vals[2])
     $('#tabelName').text(vals[1])
+    spreadsheetId=vals[0]
+    tableName=vals[1]
 }
 
 var mode = false
@@ -91,13 +92,19 @@ function submit(){
         addIncome()
     }
 }
+//------------------------------------------------------------------------
+//********* global-var **********/
+var tableName=""
+var spreadsheetId=""
+//*******************************/
 
 function addOutcome(){
     if($("input[name='item']").val()==""){alert("名稱不能為空");return;}
     if($("input[name='amount']").val()==""){alert("金額不能為空");return;}
     var data = $('form').serializeObject();
     var s = $('select')[0]
-    data.tableName = s.options[s.selectedIndex].text//sheetid has been fetch
+    data.spreadsheetId = spreadsheetId
+    data.tableName = tableName
     if(data.state=="on")data.state="Y"
     else data.state="N"
     if(data.receipt=="on")data.receipt="Y"
@@ -125,7 +132,8 @@ function addIncome(){
     if($("input[name='amount']").val()==""){alert("金額不能為空");return;}
     var data = $('form').serializeObject();
     var s = $('select')[0]
-    data.tableName = s.options[s.selectedIndex].text//sheetid has been fetch
+    data.spreadsheetId = spreadsheetId
+    data.tableName = tableName
     data.state=""
     data.receipt=""
     data.reimburse=""

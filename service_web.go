@@ -75,7 +75,7 @@ func InitSocket(){
 				if !error{
 					c.Emit("added","")
 				}else{
-					c.Emit("error","")
+					c.Emit("err","")
 				}
 		})
 		//---------- OnList ------------------------------------
