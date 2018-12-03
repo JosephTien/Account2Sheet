@@ -3,7 +3,8 @@
 <style>
 	body{
 		text-align:center;
-		font-size:4vh;
+		font-size:3vh;
+		padding-top: 50px;
 	}
 	form{
 		font-size:4vh;
@@ -16,7 +17,7 @@
 		width:100%;
 		height: 6vh
 	}
-	button{
+	button.btn{
 		height:10vh;
 		width:100%;
 		font-size:4vh;
@@ -24,11 +25,6 @@
 	a{
 		font-size:2vh;
 		vertical-align: text-top;
-	}
-	.bl{
-		border-top: 2px solid gray;
-		padding-bottom: 2vh;
-		padding-top: 2vh;
 	}
 	/******************************************/
 	/* The switch - the box around the slider */
@@ -94,30 +90,57 @@
 	}
 </style>
 <body>
+	<!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" id="tabelName" href="">Loading...</a>
+			</div>
+			<div id="navbar" class="collapse navbar-collapse">
+				<ul id="sheetlist" class="nav navbar-nav "></ul>
+			</div>
+		</div>
+	</nav>
 	<div class="container">
 		<br>
 		<form enctype='application/json' id="form">	
+			<!--
 			<select name="spreadsheetId">
-				<!--
 				<option value="1zvYlacc1ESyAcBoxuOyLlZ_Uiilz5MA8b21_p_NzWng" gid="0">
 					Diego
-				</option>
-				-->
+				</option>	
 			</select>
 			<a id="link" herf=""></a>
+			-->
 			<!----------------------------------------------------------------------->
-			<div class="row bl">
+			<div class="row">
 				<div class="col-xs-3">日期</div>
-				<div class="col-xs-9"><input type="date" name="date"></div>
+				<!--<div class="col-xs-9"><input type="date" width="100%" name="date"></div>-->
+				<div class="col-xs-9 form-group">
+					<div class='input-group date' id='datetimepicker'>
+						<input type='text' class="form-control" />
+						<span class="input-group-addon">
+							<span class="glyphicon "></span>
+						</span>
+					</div>
+				</div>
 			</div>
+			<hr>
 			<!----------------------------------------------------------------------->
-			<div class="row bl">
+			<div class="row">
 				<div class="col-xs-3">內容</div>
 				<div class="col-xs-9"><input type="text" name="item"></div>
 			</div>
+			<hr>
 			<!----------------------------------------------------------------------->
 			<div id="optional">
-			<div class="row bl">
+			<div class="row">
 				<div class="col-xs-3">墊款</div>
 				<div class="col-xs-3">
 					<label class="switch">
@@ -127,8 +150,9 @@
 				</div>
 				<div class="col-xs-6"><input type="text" name="payer" placeholder="墊款人"></div>
 			</div>
+			<hr>
 			<!----------------------------------------------------------------------->
-			<div class="row bl">
+			<div class="row">
 				<div class="col-xs-3">收據</div>
 				<div class="col-xs-3">
 					<label class="switch">
@@ -137,15 +161,17 @@
 					</label>
 				</div>
 			</div>
+			<hr>
 			</div>
 			<!----------------------------------------------------------------------->
-			<div class="row bl">
+			<div class="row">
 				<div class="col-xs-3">金額</div>
 				<div class="col-xs-9"><input type="number" name="amount"></div>
 			</div>
+			<hr>
 			<!----------------------------------------------------------------------->
 		</form>
-		<div class="row bl">
+		<div class="row">
 			<div class="col-xs-6">
 				<button id="submit" class="btn btn-success" style="font-size:4vh" onclick="submit()">新增支出</button>
 			</div>

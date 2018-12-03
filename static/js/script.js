@@ -1,6 +1,10 @@
 //----- UI Iinitial -----//
 $('input[name="date"]').val(getToday());
 $('input[name="payer"]').hide()
+$('#datetimepicker').datetimepicker({
+    format: 'YYYY/MM/DD',
+    defaultDate:new Date()
+});
 //----- socket.io -----//
 var socket = io('', {transports: ['websocket']});//this domain
 socket.on('added',function(data){
@@ -14,6 +18,7 @@ socket.on('list',function(data){
     var sheets = data.split("\\");
     var select = $('select')[0];
     var i=0
+    /*
     sheets.forEach(sheet => {
         var vals = sheet.split("/")
         var option = new Option(vals[1], vals[0]);
@@ -23,6 +28,16 @@ socket.on('list',function(data){
         if(i==0){
             $('#link').text(vals[0]+":"+vals[1])
             $('#link').attr("href", "https://docs.google.com/spreadsheets/d/"+vals[0]+"/edit#gid="+vals[2])
+        }
+        i++
+    });
+    */
+    sheets.forEach(sheet => {
+        var vals = sheet.split("/")
+        $("#sheetlist").append("<li><a href=\"javascript:selectSheet(\'"+sheet+"\')\">"+vals[1]+"</a></li>")
+        if(i==0){
+            $('#tabelName').attr("href", "https://docs.google.com/spreadsheets/d/"+vals[0]+"/edit#gid="+vals[2])
+            $('#tabelName').text(vals[1])
         }
         i++
     });
@@ -50,8 +65,13 @@ $('input[name="state"]').on('change', function (){
     }
 });
 //------------------------------------------------------------------------
-var mode = false
+function selectSheet(sheet){
+    var vals = sheet.split("/")
+    $('#tabelName').attr("href", "https://docs.google.com/spreadsheets/d/"+vals[0]+"/edit#gid="+vals[2])
+    $('#tabelName').text(vals[1])
+}
 
+var mode = false
 function toggleMode(){
     mode = !mode
     clear()
